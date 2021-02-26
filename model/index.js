@@ -1,11 +1,11 @@
 const Contact = require('../model/shemas/shema-contact');
 
 // const fs = require("fs/promises");
-const fs = require('fs').promises;
-const path = require('path');
+// const fs = require('fs').promises;
+// const path = require('path');
 // const shortid = require("shortid");
 
-const contactsPath = path.join(__dirname, './contacts.json');
+// const contactsPath = path.join(__dirname, './contacts.json');
 
 // const listContacts = async () => {
 //   const data = await fs.readFile(contactsPath, 'utf8');
@@ -22,7 +22,7 @@ const listContacts = async () => {
 //   return contact;
 // };
 const getContactById = async contactId => {
-  const contact = await Contact.find({ _id: contactId });
+  const contact = await Contact.findOne({ _id: contactId });
   return contact;
 };
 

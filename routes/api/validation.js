@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 const schemaAddContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -6,6 +6,9 @@ const schemaAddContact = Joi.object({
   phone: Joi.string()
     .pattern(/^[0-9]/)
     .required(),
+  subscription: Joi.string(),
+  password: Joi.string(),
+  token: Joi.string().allow(''),
 });
 
 const validate = (shema, obj, next) => {
