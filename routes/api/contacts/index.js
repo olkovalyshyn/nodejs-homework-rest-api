@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const validate = require('./validation');
-const contactsControllers = require('../../controllers/contacts-controllers');
+const contactsControllers = require('../../../controllers/contacts-controllers');
 
 router
   .get('/', contactsControllers.getAll)
