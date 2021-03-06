@@ -1,12 +1,21 @@
 const Contact = require('./shemas/shema-contact');
 
-const listContacts = async () => {
-  const data = await Contact.find({});
+const listContacts = async userId => {
+  const data = await Contact.find({ owner: userId }).populate({
+    path: 'owner',
+    select: 'email subscription -_id',
+  });
   return data;
 };
 
-const getContactById = async contactId => {
-  const contact = await Contact.findOne({ _id: contactId });
+const getContactById = async (contactId, userId) => {
+  const contact = await Contact.findOne({
+    _id: contactId,
+    owner: userId,
+  }).populate({
+    path: 'owner',
+    select: 'email subscription -_id',
+  });
   return contact;
 };
 
@@ -20,9 +29,9 @@ const addContact = async body => {
   return newContact;
 };
 
-const updateContact = async (contactId, body) => {
+const updateContact = async (contactId, body, userId) => {
   const contact = await Contact.findByIdAndUpdate(
-    { _id: contactId },
+    { _id: contactId, owner: userId },
     { ...body },
     { new: true },
   );
