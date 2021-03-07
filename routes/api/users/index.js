@@ -4,7 +4,7 @@ const validate = require('./validation');
 const usersControllers = require('../../../controllers/users-controllers');
 const guard = require('../../../helpers/guard');
 
-router.post('/auth/register', usersControllers.reg);
+router.post('/auth/register', validate.addValidatedUsers, usersControllers.reg);
 
 router.post('/auth/login', usersControllers.login);
 

@@ -20,7 +20,7 @@ const getContactById = async (contactId, userId) => {
 };
 
 const removeContact = async contactId => {
-  const contact = await Contact.findByIdAndRemove({ _id: contactId });
+  const contact = await Contact.findOneAndRemove({ _id: contactId });
   return contact;
 };
 
@@ -30,7 +30,7 @@ const addContact = async body => {
 };
 
 const updateContact = async (contactId, body, userId) => {
-  const contact = await Contact.findByIdAndUpdate(
+  const contact = await Contact.findOneAndUpdate(
     { _id: contactId, owner: userId },
     { ...body },
     { new: true },
