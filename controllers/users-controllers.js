@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
 
     const id = user._id;
     const payload = { id };
-    console.log('!!!payload in controllers', payload);
+    // console.log('!!!payload in controllers', payload);
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
     await usersActions.updateToken(id, token);
     return res.status(HttpCode.OK).json({

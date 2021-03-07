@@ -25,6 +25,7 @@ const removeContact = async contactId => {
 };
 
 const addContact = async body => {
+  console.log('!!!body', body);
   const newContact = await Contact.create(body);
   return newContact;
 };
