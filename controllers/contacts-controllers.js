@@ -5,12 +5,14 @@ const getAll = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const contacts = await contactsActions.listContacts(userId);
-    return res.status(HttpCode.OK).json({
+    return res.json({
       status: 'success',
       code: HttpCode.OK,
       data: { contacts },
     });
   } catch (error) {
+    console.log('!!!error in contacts-controllers', error);
+
     next(error);
   }
 };
@@ -23,13 +25,13 @@ const getById = async (req, res, next) => {
       userId,
     );
     if (contact) {
-      return res.status(HttpCode.OK).json({
+      return res.json({
         status: 'succsess',
         code: HttpCode.OK,
         data: { contact },
       });
     } else {
-      return res.status(HttpCode.NOT_FOUND).json({
+      return res.json({
         status: 'error',
         code: HttpCode.NOT_FOUND,
         data: 'Not found',
@@ -47,7 +49,7 @@ const create = async (req, res, next) => {
       ...req.body,
       owner: userId,
     });
-    return res.status(HttpCode.CREATED).json({
+    return res.json({
       status: 'success',
       code: HttpCode.CREATED,
       body: { contact },
@@ -65,14 +67,14 @@ const remove = async (req, res, next) => {
       userId,
     );
     if (contact) {
-      return res.status(HttpCode.OK).json({
+      return res.json({
         status: 'success',
         code: HttpCode.OK,
         message: 'contact deleted',
         data: { contact },
       });
     } else {
-      return res.status(HttpCode.NOT_FOUND).json({
+      return res.json({
         status: 'error',
         code: HttpCode.NOT_FOUND,
         data: 'Not Found',

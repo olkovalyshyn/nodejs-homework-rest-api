@@ -8,8 +8,10 @@ const guard = (req, res, next) => {
       ? req.get('Authorization').split(' ')[1]
       : null;
 
-    // console.log('!!!token', token);
-    // console.log('!!!user', user);
+    console.log('!!!user', user);
+    console.log('!!!err', err);
+    console.log('!!!token', token);
+    console.log('!!!user.token', user.token);
     // console.log('!!!req.get', req.get('Authorization').split(' ')[1]);
     // console.log('!!!req', req);
 
@@ -18,7 +20,7 @@ const guard = (req, res, next) => {
         status: 'error',
         code: HttpCode.FORBIDDEN,
         data: 'Forbidden',
-        message: 'Access is denied',
+        message: 'Access is denied!',
       });
     }
     req.user = user;

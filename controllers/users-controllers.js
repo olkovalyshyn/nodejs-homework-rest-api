@@ -64,10 +64,21 @@ const login = async (req, res, next) => {
   }
 };
 
+// const logout = async (req, res, next) => {
+//   const id = req.user.id;
+//   await usersActions.updateToken(id, null);
+//   return res.status(HttpCode.NO_CONTENT).json({});
+// };
+
 const logout = async (req, res, next) => {
-  const id = req.user.id;
-  await usersActions.updateToken(id, null);
-  return res.status(HttpCode.NO_CONTENT).json({});
+  try {
+    const id = req.user.id;
+    await usersActions.updateToken(id, null);
+    return res.status(HttpCode.NO_CONTENT).json({});
+  } catch (error) {
+    console.log('!!!next(error)', next(error));
+    next(error);
+  }
 };
 
 module.exports = { reg, login, logout };
