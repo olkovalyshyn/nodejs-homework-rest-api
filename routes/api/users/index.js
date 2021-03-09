@@ -10,4 +10,6 @@ router.post('/auth/login', usersControllers.login);
 
 router.post('/auth/logout', guard, usersControllers.logout);
 
+router.get('/current', guard, usersControllers.getCurrentUser);
+
 module.exports = router;

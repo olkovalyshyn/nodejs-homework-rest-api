@@ -11,10 +11,7 @@ const params = {
 passport.use(
   new Strategy(params, async (payload, done) => {
     try {
-      // console.log('!!!payload in pasport', payload);
-
       const user = await usersActions.findById(payload.id);
-      // console.log('!!!user in password', user);
       if (!user) {
         return done(new Error('User not found!'));
       }

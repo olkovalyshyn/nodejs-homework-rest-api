@@ -4,15 +4,14 @@ const HttpCode = require('../helpers/constants');
 const getAll = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const contacts = await contactsActions.listContacts(userId);
+    const contacts = await contactsActions.listContacts(userId, req.query);
+
     return res.json({
       status: 'success',
       code: HttpCode.OK,
-      data: { contacts },
+      data: { ...contacts },
     });
   } catch (error) {
-    console.log('!!!error in contacts-controllers', error);
-
     next(error);
   }
 };
@@ -93,7 +92,6 @@ const updateStatus = async (req, res, next) => {
       req.body,
       userId,
     );
-
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: 'success',

@@ -1,11 +1,26 @@
 const Contact = require('./shemas/shema-contact');
 
-const listContacts = async userId => {
-  const data = await Contact.find({ owner: userId }).populate({
-    path: 'owner',
-    select: 'email subscription -_id',
-  });
-  return data;
+const listContacts = async (
+  userId,
+  { sortBy, sortByDesc, filter, limit = '5', offset = '0' },
+) => {
+  const data = await Contact.paginate(
+    { owner: userId },
+    {
+      limit,
+      offset,
+      sort: {
+        ...(sortBy ? { [`${sortBy}`]: 1 } : {}),
+        ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
+      },
+      populate: {
+        path: 'owner',
+        select: 'email subscription -_id',
+      },
+    },
+  );
+  const { docs: contacts, totalDocs: total } = data;
+  return { total: total.toString(), limit, offset, contacts };
 };
 
 const getContactById = async (contactId, userId) => {
@@ -25,7 +40,6 @@ const removeContact = async contactId => {
 };
 
 const addContact = async body => {
-  console.log('!!!body', body);
   const newContact = await Contact.create(body);
   return newContact;
 };

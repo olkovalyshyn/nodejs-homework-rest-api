@@ -8,7 +8,6 @@ const reg = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await usersActions.findByEmail(email);
-    // console.log('!!!user', user);
     if (user) {
       return res.status(HttpCode.CONFLICT).json({
         status: 'error',
@@ -49,7 +48,6 @@ const login = async (req, res, next) => {
 
     const id = user._id;
     const payload = { id };
-    // console.log('!!!payload in controllers', payload);
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
     await usersActions.updateToken(id, token);
     return res.status(HttpCode.OK).json({
@@ -64,12 +62,6 @@ const login = async (req, res, next) => {
   }
 };
 
-// const logout = async (req, res, next) => {
-//   const id = req.user.id;
-//   await usersActions.updateToken(id, null);
-//   return res.status(HttpCode.NO_CONTENT).json({});
-// };
-
 const logout = async (req, res, next) => {
   try {
     const id = req.user.id;
@@ -81,4 +73,29 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { reg, login, logout };
+const getCurrentUser = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const contact = await usersActions.findById(userId);
+    if (contact) {
+      return res.json({
+        status: 'succsess',
+        code: HttpCode.OK,
+        data: {
+          email: contact.email,
+          subscription: contact.subscription,
+        },
+      });
+    } else {
+      return res.json({
+        status: 'error',
+        code: HttpCode.UNAUTHORIZED,
+        data: 'Not authorized',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { reg, login, logout, getCurrentUser };
