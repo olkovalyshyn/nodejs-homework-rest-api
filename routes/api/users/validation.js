@@ -1,4 +1,6 @@
 const Joi = require('joi');
+const { Code } = require('mongodb');
+const { HttpCode } = require('../../../helpers/constants');
 
 const schemaAddUser = Joi.object({
   email: Joi.string().email().required(),
@@ -19,6 +21,23 @@ const validate = (shema, obj, next) => {
   next();
 };
 
-module.exports.addValidatedUsers = (req, res, next) => {
+const addValidatedUsers = (req, res, next) => {
   return validate(schemaAddUser, req.body, next);
+};
+
+const validateUploadAvatar = (req, res, next) => {
+  if (!req.file) {
+    return res.json({
+      status: 'error',
+      code: HttpCode.BAD_REQUEST,
+      data: 'Bed request',
+      message: 'Field of avatar with file not found',
+    });
+  }
+  next();
+};
+
+module.exports = {
+  addValidatedUsers,
+  validateUploadAvatar,
 };
